@@ -16,7 +16,7 @@ class SubwayArrival{
   String _subwayHeading;
   String _arvlMsg2;
 
-  SubwayArrival(this._rowNum, this._trainLineNm, this._subwayHeading, this._subwayId, this._arvlMsg2);
+  SubwayArrival(this._rowNum, this._subwayId, this._trainLineNm, this._subwayHeading, this._arvlMsg2);
 //  int get rowNum{
 //    return _rowNum;
 //  }
@@ -39,6 +39,108 @@ class _MainScreenState extends State<MainScreen> {
     if(_data.length == 0){
       return <Card>[];
     }
+
+    List<Card> res = [];
+    for (SubwayArrival info in _data){
+      Card card = Card(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              if(info. _subwayId == '1001')
+                CircleAvatar(
+                  child: Text('1', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFF0d3692),
+                ),
+              if(info. _subwayId == '1002')
+                CircleAvatar(
+                  child: Text('2', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Colors.green,
+                ),
+              if(info. _subwayId == '1003')
+                CircleAvatar(
+                  child: Text('3', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFFfe5d10),
+                ),
+              if(info. _subwayId == '1004')
+                CircleAvatar(
+                  child: Text('4', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFF32A1C8),
+                ),
+              if(info. _subwayId == '1005')
+                CircleAvatar(
+                  child: Text('5', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFF8b50a4),
+                ),
+              if(info. _subwayId == '1006')
+                CircleAvatar(
+                  child: Text('6', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFFc55c1d),
+                ),
+              if(info. _subwayId == '1007')
+                CircleAvatar(
+                  child: Text('7', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFF54640d),
+                ),
+              if(info. _subwayId == '1008')
+                CircleAvatar(
+                  child: Text('8', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFFf14c82),
+                ),
+              if(info. _subwayId == '1009')
+                CircleAvatar(
+                  child: Text('9', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFFaa9872),
+                ),
+              if(info. _subwayId == '1075')
+                CircleAvatar(
+                  child: Text('분당', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFFff8c00),
+                ),
+              if(info. _subwayId == '1077')
+                CircleAvatar(
+                  child: Text('신분당', style: TextStyle(color:Colors.white),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFFc82127),
+                ),
+              if(info. _subwayId == '1063')
+                CircleAvatar(
+                  child: Text('경의중앙', style: TextStyle(color:Colors.white, fontSize: 12),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFF73c7a6),
+                ),
+              if(info. _subwayId == '1067')
+                CircleAvatar(
+                  child: Text('경춘', style: TextStyle(color:Colors.white,),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFF32c6a6),
+                ),
+              SizedBox(width: 20.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('도착지 방면 : ' + info._trainLineNm),
+                  Text('내리는 문 방향 : ' + info._subwayHeading),
+                  Text('이전 열차 위 : ' + info._arvlMsg2),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+      res.add(card);
+    }
+    return res;
   }
 
 
@@ -75,12 +177,19 @@ class _MainScreenState extends State<MainScreen> {
     SubwayArrival first = list[0];
 
     setState(() {
-     _rowNum = first.rowNum;
-     _subwayId = first.subwayId;
-     _trainLineNm = first.trainLineNm;
-     _subwayHeading = first.subwayHeading;
-     _arvlMsg2 = first.arvlMsg2;
+      _data = list;
+//     _rowNum = first.rowNum;
+//     _subwayId = first.subwayId;
+//     _trainLineNm = first.trainLineNm;
+//     _subwayHeading = first.subwayHeading;
+//     _arvlMsg2 = first.arvlMsg2;
     });
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _getInfo();
   }
 
   @override
@@ -89,13 +198,13 @@ class _MainScreenState extends State<MainScreen> {
       //키패드 높이 위로 중앙 컨텐츠가 위
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('Subway Arrival'),
+        title: Text('서울 지하철 도착정보'),
       ),
       body: Column(
         children: [
           Container(
             padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-            height: 70,
+            height: 60,
             child: Row(
               children: [
                 Container(
