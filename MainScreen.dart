@@ -34,6 +34,9 @@ class _MainScreenState extends State<MainScreen> {
   );
 
   List<SubwayArrival> _data = [];
+
+  bool _isLoading = false;
+
   List<Card> _buildCards(){
     print(_data.length);
     if(_data.length == 0){
@@ -125,6 +128,12 @@ class _MainScreenState extends State<MainScreen> {
                   radius: 25.0,
                   backgroundColor: Color(0xFF32c6a6),
                 ),
+              if(info. _subwayId == '1065')
+                CircleAvatar(
+                  child: Text('공항', style: TextStyle(color:Colors.white,),),
+                  radius: 25.0,
+                  backgroundColor: Color(0xFF6ca8ce),
+                ),
               SizedBox(width: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,11 +165,25 @@ class _MainScreenState extends State<MainScreen> {
   String _arvlMsg2;
 
   _getInfo() async{
+
+    setState(() {
+      _isLoading = true;
+    });
+
     String station = _stationController.text;
     var response = await http.get(api.buildUrl(station));
     String responseBody = response.body;
 //    print(responseBody);
+
     var json = jsonDecode(responseBody);
+    int errorMessage = json['status'];
+    if(errorMessage == 500){
+      setState(() {
+        _data = const [];
+        _isLoading = true;
+      });
+    }
+
     List<dynamic> realtimeArrivalList = json['realtimeArrivalList'];
     final int cnt = realtimeArrivalList.length;
 //    print(cnt);
@@ -178,6 +201,7 @@ class _MainScreenState extends State<MainScreen> {
 
     setState(() {
       _data = list;
+      _isLoading = false;
 //     _rowNum = first.rowNum;
 //     _subwayId = first.subwayId;
 //     _trainLineNm = first.trainLineNm;
@@ -215,7 +239,7 @@ class _MainScreenState extends State<MainScreen> {
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
-                      hintText: '역명을 입력해 주세요.',
+                      hintText: _isLoading? '역명이 존재하지 않습니다.' : '역명을 입력해 주세요.',
                     ),
                   ),
                 ),
